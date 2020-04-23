@@ -9,9 +9,9 @@ $(() => {
     const chatButton = $("#chat-button");
     const inviteLink = $("#link");
     const tooltipTurn = $("#tooltip-turn");
-
+    const tooltipTurnWait = $("#tooltip-turn-wait");
+    
     const ui = new EventTarget();
-
     let codeLength = 3;
 
     const isValidCode = (code) => {
@@ -107,13 +107,25 @@ $(() => {
         let codeElem = $("<span></span>").text(code);
         let resultElem = $("<span class='result'></span>");
 
-        for(let i = 0; i < plus; i++) {
-            $("<span class='inverted'>+</span>").appendTo(resultElem);
-        }
+        if(plus + minus > 5) {
+            if(plus > 0) {
+                $("<span class='inverted'>+</span>").appendTo(resultElem);
+                if(plus > 1) $("<span class='multiple'></span>").text("x" + plus).appendTo(resultElem);
+            }
 
-        for(let i = 0; i < minus; i++) {
-            $("<span class='inverted'>-</span>").appendTo(resultElem);
-        }
+            if(minus > 0) {
+                $("<span class='inverted'>-</span>").appendTo(resultElem);
+                if(minus > 1) $("<span class='multiple'></span>").text("x" + minus).appendTo(resultElem);
+            }
+        } else {
+            for(let i = 0; i < plus; i++) {
+                $("<span class='inverted'>+</span>").appendTo(resultElem);
+            }
+    
+            for(let i = 0; i < minus; i++) {
+                $("<span class='inverted'>-</span>").appendTo(resultElem);
+            }
+        }   
 
         codeElem.appendTo(elem);
         resultElem.appendTo(elem);
@@ -140,7 +152,11 @@ $(() => {
     const clearGuesses = () => guesses.empty();
     const clearChat = () => chat.empty();
 
-    const setTurnTooltip = (s) => tooltipTurn.toggleClass("forced", s);
+    const setTurnTooltip = (s) => {
+        tooltipTurn.toggleClass("forced", s);
+        tooltipTurnWait.toggleClass("hover", !s);
+    };
+
     const setInviteLink = (s) => inviteLink.text(s);
 
     const copyToClipboard = (str) => {

@@ -32,12 +32,12 @@ const create = (l) => {
     return id;
 };
 
-app.use("/", express.static("public"));
 
-app.get("/create", (req, res) => {
+app.use("/", express.static("public"));
+app.get("/create", (req, res, next) => {
     let digits = Number(req.query.digits || 3);
     if(digits < 1 || digits > 10) {
-        res.status(400).end();
+        next();
         return;
     }
 
@@ -45,13 +45,13 @@ app.get("/create", (req, res) => {
     res.redirect("../" + id);
 });
 
-app.get("/:id", (req, res) => {
+app.get("/:id", (req, res, next) => {
     let id = req.params.id;
 
     if(games.has(id)) {
-        res.sendFile("game.html", {root: "./public" });
+        res.sendFile("game.html", { root: "./public" });
     } else {
-        res.status(404).end();
+        next();
     }
 });
 
@@ -60,7 +60,13 @@ app.ws("/socket/:id", (ws, req) => {
     if (games.has(id)) {
         let wss = games.get(id);
         wss(ws);
+    } else {
+        ws.terminate();
     }
+});
+
+app.get("*", (req, res) => {
+    res.sendFile("404.html", { root: "./public" });
 });
 
 app.listen(process.env.PORT || 3004);

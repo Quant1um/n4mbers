@@ -8,7 +8,7 @@ body {
     color: #fefefe;
 
     font-family: "Comfortaa", cursive;
-    font-size: 1.1em;
+    font-size: 1.2em;
 }
 
 /* MAIN */
@@ -47,25 +47,35 @@ body {
     align-items: row;
 }
 
-.settings-digits {
-    flex: 1;
-}
-
 /* GAME */
 
 .game {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
     width: 100%;
     height: 100%;
     box-sizing: border-box;
 
     padding: 50px;
+
+    display: flex;
+    flex-direction: row;
 }
 
-.game > * {
+.game-sub {
+    flex: 1;
+    display: inline-block;
+    height: 100%;
+}
+
+.game-sub > * {
+    width: 49%;
+}
+
+.game-part {
+    display: inline-block;
+    box-sizing: border-box;
+
     padding: 0 25px 10px;
+    height: 100%;
 }
 
 .code {
@@ -91,6 +101,11 @@ body {
 .guesses > * {
     margin-bottom: 5px;
     font-size: 1.5em;
+}
+
+.multiple {
+    color: #8f8f8f;
+    font-size: 0.8em;
 }
 
 .result {
@@ -188,12 +203,8 @@ select {
 
 /* FLEX GROW */
 
-.grow-1 {
+.grow {
     flex-grow: 1;
-}
-
-.grow-2 {
-    flex-grow: 2;
 }
 
 /* PADDINGS */
@@ -386,5 +397,30 @@ select {
     100% {
         -webkit-transform: rotate(360deg);
         transform: rotate(360deg);
+    }
+}
+
+@media only screen and (max-width: 800px)  {
+
+    .game {
+        width: 100%;
+        box-sizing: border-box;
+    
+        padding: 50px;
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+    }
+    
+    .game-part {
+        box-sizing: border-box;
+        flex: 0;
+    
+        padding: 0 25px 10px;
+        width: 100%;
+    }
+
+    .game-sub {
+        flex: 0;
     }
 }

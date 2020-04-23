@@ -23,7 +23,7 @@
 
     <body>
         <div class="game">
-            <div>
+            <div class="game-part">
                 <div class="label">Your code</div>
                 <div class="code tooltip" id="info-code">
                     <div class="hover tooltip-text">
@@ -33,35 +33,39 @@
                 </div>
             </div>
 
-            <div class="grow-1">
-                <div class="label">Your guesses</div>
-                <div class="pad"></div>
-                <div class="guesses list" id="info-guesses">
-                    <div>
+            <div class="game-sub">
+                <div class="game-part">
+                    <div class="label">Your guesses</div>
+                    <div class="pad"></div>
+                    <div class="guesses list" id="info-guesses">
+                    </div>
+    
+                    <div class="pad"></div>
+                    <div class="enter tooltip">
+                        <input class="input field grow" id="guess-input">
+                        <input type="button" class="input button" value="Guess" id="guess-button">
+    
+                        <div class="bottom tooltip-text" id="tooltip-turn">
+                            It&nbsp;is&nbsp;your&nbsp;turn!
+                        </div>
+    
+                        <div class="bottom tooltip-text" id="tooltip-turn-wait">
+                            Wait&nbsp;for&nbsp;the&nbsp;opponent's&nbsp;turn
+                        </div>
                     </div>
                 </div>
-
-                <div class="pad"></div>
-                <div class="enter tooltip">
-                    <input class="input field grow-2" id="guess-input">
-                    <input type="button" class="input button" value="Guess" id="guess-button">
-
-                    <div class="bottom tooltip-text" id="tooltip-turn">
-                        It&nbsp;is&nbsp;your&nbsp;turn!
+    
+                <div class="game-part">
+                    <div class="label">Chat</div>
+                    <div class="pad"></div>
+                    <div class="chat list" id="info-chat">
                     </div>
-                </div>
-            </div>
-
-            <div class="grow-1">
-                <div class="label">Chat</div>
-                <div class="pad"></div>
-                <div class="chat list" id="info-chat">
-                </div>
-
-                <div class="pad"></div>
-                <div class="enter">
-                    <input class="input field grow-2" id="chat-input"> 
-                    <input type="button" class="input button" value="Send" id="chat-button">
+    
+                    <div class="pad"></div>
+                    <div class="enter">
+                        <input class="input field grow" id="chat-input"> 
+                        <input type="button" class="input button" value="Send" id="chat-button">
+                    </div>
                 </div>
             </div>
         </div>
