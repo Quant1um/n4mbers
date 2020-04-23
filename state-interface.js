@@ -1,22 +1,16 @@
-const ws = require("ws");
-
 module.exports = (state) => {
-    let server = new ws.Server({ 
-        noServer: true,
-        perMessageDeflate: false,
-        clientTracking: true,
-        maxPayload: 512
-    });
+    let clients = new Map();
 
-    const send = (message) => server.clients.forEach((ws) => {
+    const send = (message) => clients.forEach((ws) => {
         ws.send(JSON.stringify(message));
     });
 
-    const sendi = (index, message) => server.clients.forEach((ws) => {
-        if(ws.gameIndex === index) ws.send(JSON.stringify(message));
-    });
+    const sendi = (index, message) => {
+        if(clients.has(index)) 
+            clients.get(index).send(JSON.stringify(message));
+    };
 
-    const sendx = (index, message) => server.clients.forEach((ws) => {
+    const sendx = (index, message) => clients.forEach((ws) => {
         if(ws.gameIndex !== index) ws.send(JSON.stringify(message));
     });
 
@@ -35,69 +29,63 @@ module.exports = (state) => {
     });
 
     state.on("pause", () => send({ q: "pause" }));
+    state.on("resume", () => send({ q: "resume" }));
 
-    server.on("connection", (ws) => {
-        console.log("there is a ws connection");
-        ws.once("open", () => {
-            let index = state.connect();
-            let chatLimit = new Date();
+    return (ws) => {
+        const heartbeat = () => ws.isAlive = true;
 
-            if(index === false) {
-                return ws.terminate();
-            }
-        
-            ws.gameIndex = index;
-            ws.isAlive = true;
-            ws.on("pong", () => ws.isAlive = true);
+        const timeout = setInterval(() => {
+            if(ws.isAlive) {
+                ws.isAlive = false;
+                ws.ping();
+            } else ws.terminate();
+        }, 8000);
 
-            ws.on("message", (data) => {
-                let msg = JSON.parse(data);
-                if(typeof(msg) === "object") {
-                    if(msg.q === "turn") {
-                        state.turn(index, msg.v);
-                    } else if(msg.q === "chat") {
-                        if(new Date() - chatLimit > 500) {
-                            msg.v = (msv.v || "").toString();
-                            if(msg.v.length > 256) msg.v = msg.v.substring(0, 256);
-                            chatLimit = new Date();
-                            
-                            sendi({ q: "chat", v: msg.v, s: true });
-                            sendx({ q: "chat", v: msg.v, s: false });
-                        }
+        let index = state.connect();
+        let chatLimit = new Date();
+
+        if(index === false) {
+            return ws.terminate();
+        }
+    
+        clients.set(index, ws);
+        ws.gameIndex = index;
+
+        heartbeat();
+        ws.on("pong", heartbeat);
+        ws.on("message", (data) => {
+            let msg = JSON.parse(data);
+            if(typeof(msg) === "object") {
+                if(msg.q === "turn") {
+                    state.turn(index, msg.v);
+                } else if(msg.q === "chat") {
+                    if(new Date() - chatLimit > 500) {
+                        msg.v = (msg.v || "").toString();
+                        if(msg.v.length > 256) msg.v = msg.v.substring(0, 256);
+                        chatLimit = new Date();
+                        
+                        sendi(index, { q: "chat", v: msg.v, s: true });
+                        sendx(index, { q: "chat", v: msg.v, s: false });
                     }
                 }
-            });
-
-            ws.on("close", () => {
-                state.disconnect(ws.gameIndex);
-            });
-
-            let playerObj = state.players[index];
-
-            sendi(index, { q: "state", v: {
-                turn: state.turn === index,
-                asks: playerObj.asks,
-                code: playerObj.code,
-                name: state.name,
-                paused: state.state !== "playing",
-                codeLength: state.options.codeLength,
-                winner: state.winner !== null ? state.winner === index : null
-            }});
+            }
         });
-    });
 
-    const interval = setInterval(() => {
-        server.clients.forEach((ws) => {
-            if (!ws.isAlive) return ws.terminate();
-        
-            ws.isAlive = false;
-            ws.ping();
+        ws.on("close", () => {
+            clients.delete(index);
+            state.disconnect(ws.gameIndex);
+            clearInterval(timeout);
         });
-    }, 8000);
-    
-    server.on("close", () => {
-        clearInterval(interval);
-    });
 
-    return server;
+        let playerObj = state.players[index];
+        sendi(index, { q: "state", v: {
+            turn: state.turnIndex === index,
+            asks: playerObj.asks,
+            code: playerObj.code,
+            name: state.name,
+            paused: state.state !== "playing",
+            codeLength: state.options.codeLength,
+            winner: state.winner !== null ? state.winner === index : null
+        }});
+    };
 };

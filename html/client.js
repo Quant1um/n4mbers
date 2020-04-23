@@ -6,7 +6,7 @@ class GameState extends EventTarget {
         this.connected = false;
         this.paused = true;
         this.winner = null;
-        this.turn = false;
+        this.yourTurn = false;
         this.code = null;
         this.name = null;
         this.codeLength = 3;
@@ -16,7 +16,7 @@ class GameState extends EventTarget {
         this.connected = true;
         this.paused = state.paused;
         this.winner = state.winner;
-        this.turn = state.turn;
+        this.yourTurn = state.turn;
         this.code = state.code;
         this.name = state.name;
         this.codeLength = state.codeLength;
@@ -71,12 +71,12 @@ class GameState extends EventTarget {
     }
 
     handleGetControl() {
-        this.turn = true;
+        this.yourTurn = true;
         this.dispatchEvent(new CustomEvent("take control"));
     }
 
     handleLoseControl() {
-        this.turn = false;
+        this.yourTurn = false;
         this.dispatchEvent(new CustomEvent("lose control"));
     }
 }
@@ -89,11 +89,11 @@ class GameClient extends GameState {
     }
 
     createWsClient(addr) {
-        console.log(addr);
         this.client = new WebSocket(addr);
 
         this.client.onopen = (e) => console.log("Connection established!");
         this.client.onmessage = (e) => {
+            console.log("message: '" + e.data + "'");
             let msg = JSON.parse(e.data);
 
             if(msg.q === "state") {

@@ -61,18 +61,18 @@ class GameState extends events.EventEmitter {
         this.options = options;
         this.players = [ new PlayerState(0, generateValidCode(options.codeLength)), new PlayerState(1, generateValidCode(options.codeLength)) ]; 
 
-        this.turn = 0;
+        this.turnIndex = Math.floor(Math.random() * this.players.length);
         this.winner = null;
     }
 
     turn(index, code) {
         if(this.state !== "playing") return false;
-        if(index !== this.turn) return false;
+        if(index !== this.turnIndex) return false;
         if(code.length !== this.options.codeLength) return false;
         if(!isValidCode(code)) return false;
 
         let currentPlayerObj = this.players[index];
-        let nextPlayer = (this.turn + 1) % this.players.length;
+        let nextPlayer = (this.turnIndex + 1) % this.players.length;
         let result = this.players[nextPlayer].ask(code);
 
         currentPlayerObj.asks.push(result);
@@ -82,7 +82,7 @@ class GameState extends events.EventEmitter {
             this.winner = currentPlayerObj;
             this.emit("win", index);
         } else {
-            this.turn = nextPlayer;
+            this.turnIndex = nextPlayer;
             this.emit("nextTurn", nextPlayer);
         }
 
@@ -119,7 +119,6 @@ class GameState extends events.EventEmitter {
     }
 
     get state() {
-        if (this.players.every((p) => !p.connected)) return "dead";
         if (this.winner !== null) return "completed";
         if (this.players.every((p) => p.connected)) return "playing";
         return "waiting";

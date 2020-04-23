@@ -5,11 +5,11 @@ $(() => {
         return h;
     }
 
-    let client = N4mbers.createClient("ws://127.0.0.1:3003/" + hash());
+    let client = N4mbers.createClient("ws://127.0.0.1:3004/socket/" + hash());
     let ui = N4mbersUi;
 
     ui.addEventListener("guess", (e) => {
-        if(!client.connected || !client.turn) {
+        if(!client.connected || !client.yourTurn) {
             return e.preventDefault();
         }
 

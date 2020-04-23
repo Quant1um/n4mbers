@@ -1,4 +1,5 @@
 const express = require("express");
+const expressws = require("express-ws");
 const url = require("url");
 const http = require("http");
 
@@ -12,8 +13,9 @@ const random = () => {
 };
 
 const app = express();
-const server = http.createServer(app);
-let games = new Map();
+expressws(app);
+
+const games = new Map();
 
 const create = (l) => {
     let id = random();
@@ -25,7 +27,6 @@ const create = (l) => {
     let iface = createGameStateInterface(state);
 
     state.on("close", () => {
-        iface.close();
         games.delete(id);
     });
 
@@ -56,25 +57,12 @@ app.get("/:id", (req, res) => {
     }
 });
 
-server.on("upgrade", (req, socket, head) => {
-    console.log("upgrade request " + head);
-    const pathname = url.parse(req.url).pathname;
-    if(pathname.startsWith("/")) pathname = pathname.substr(1);
-    console.log(pathname);
-
-    if (req.headers["upgrade"] !== "websocket") {
-        socket.end("HTTP/1.1 400 Bad Request");
-        return;
-    }
-
-    if (games.has(pathname)) {
-        let wss = games.get(pathname);
-        wss.handleUpgrade(req, socket, head, (ws) => {
-            wss.emit("connection", ws, req);
-        });
-    } else {
-        socket.end("HTTP/1.1 404 Not Found");
+app.ws("/socket/:id", (ws, req) => {
+    let id = req.params.id || "";
+    if (games.has(id)) {
+        let wss = games.get(id);
+        wss(ws);
     }
 });
 
-server.listen(process.env.PORT || 3003);
+app.listen(process.env.PORT || 3004);
