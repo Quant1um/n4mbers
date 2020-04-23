@@ -5,7 +5,8 @@ $(() => {
         return h;
     }
 
-    let client = N4mbers.createClient("ws://127.0.0.1:3004/socket/" + name());
+    let secure = location.protocol === "https:";
+    let client = N4mbers.createClient((secure ? "wss://" : "ws://") + window.location.host + "/socket/" + name());
     let ui = N4mbersUi;
 
     ui.addEventListener("guess", (e) => {
