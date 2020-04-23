@@ -3,13 +3,11 @@ $(() => {
     const codeText =  $("#info-code");
     const guesses =  $("#info-guesses");
     const chat = $("#info-chat");
-
     const guessInput = $("#guess-input");
     const guessButton = $("#guess-button");
-
     const chatInput = $("#chat-input");
     const chatButton = $("#chat-button");
-
+    const inviteLink = $("#link");
     const tooltipTurn = $("#tooltip-turn");
 
     const ui = new EventTarget();
@@ -142,9 +140,8 @@ $(() => {
     const clearGuesses = () => guesses.empty();
     const clearChat = () => chat.empty();
 
-    const setTurnTooltip = (s) => {
-        tooltipTurn.toggleClass("forced", s);
-    };
+    const setTurnTooltip = (s) => tooltipTurn.toggleClass("forced", s);
+    const setInviteLink = (s) => inviteLink.text(s);
 
     const copyToClipboard = (str) => {
         var $temp = $("<input>");
@@ -184,6 +181,7 @@ $(() => {
         clearChat, clearGuesses,
 
         setCodeLength,
+        setInviteLink,
         setTurnTooltip,
 
         isOverlayEnabled,

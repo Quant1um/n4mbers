@@ -1,11 +1,11 @@
 $(() => {
-    const hash = () => {
-        let h = window.location.hash;
-        if (h.startsWith("#")) h = h.substring(1);
+    const name = () => {
+        let h = window.location.pathname;
+        if (h.startsWith("/")) h = h.substring(1);
         return h;
     }
 
-    let client = N4mbers.createClient("ws://127.0.0.1:3004/socket/" + hash());
+    let client = N4mbers.createClient("ws://127.0.0.1:3004/socket/" + name());
     let ui = N4mbersUi;
 
     ui.addEventListener("guess", (e) => {
@@ -41,7 +41,7 @@ $(() => {
 
     client.addEventListener("turn", (e) => {
         let r = e.detail;
-        ui.addGuess(r[0], r[1], r[2]);
+        ui.addGuess(r[0], r[1], client.codeLength > 9 ? 0 : r[2]);
     });
 
     client.addEventListener("take control", () => {
@@ -73,4 +73,5 @@ $(() => {
     });
 
     ui.setOverlayEnabled(ui.overlays.connection, true);
+    ui.setInviteLink(window.location);
 });

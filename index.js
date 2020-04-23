@@ -1,7 +1,5 @@
 const express = require("express");
 const expressws = require("express-ws");
-const url = require("url");
-const http = require("http");
 
 const createGameState = require("./state");
 const createGameStateInterface = require("./state-interface");
@@ -34,10 +32,10 @@ const create = (l) => {
     return id;
 };
 
-app.use("/", express.static("html"));
+app.use("/", express.static("public"));
 
 app.get("/create", (req, res) => {
-    let digits = req.params.digits || 3;
+    let digits = Number(req.query.digits || 3);
     if(digits < 1 || digits > 10) {
         res.status(400).end();
         return;
@@ -51,7 +49,7 @@ app.get("/:id", (req, res) => {
     let id = req.params.id;
 
     if(games.has(id)) {
-        res.redirect("../game.html#" + id);
+        res.sendFile("game.html", {root: "./public" });
     } else {
         res.status(404).end();
     }

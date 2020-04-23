@@ -8,7 +8,7 @@ body {
     color: #fefefe;
 
     font-family: "Comfortaa", cursive;
-    font-size: 1.3em;
+    font-size: 1.1em;
 }
 
 /* MAIN */
@@ -56,19 +56,16 @@ body {
 .game {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     width: 100%;
     height: 100%;
     box-sizing: border-box;
 
-    padding: 50px
+    padding: 50px;
 }
 
 .game > * {
-    margin-right: 50px;
-}
-
-.game > *:last-child {
-    margin-right: 0;
+    padding: 0 25px 10px;
 }
 
 .code {
@@ -173,7 +170,7 @@ select {
     overflow-wrap: break-word;
     word-wrap: break-word;
 
-    height: 50%;
+    height: 60%;
     background-color: #27272c;
     box-shadow: inset 1px 1px 5px 5px #00000020;
 

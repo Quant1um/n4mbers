@@ -56,7 +56,7 @@ class GameState extends events.EventEmitter {
     constructor(name, options = { codeLength: 3 }) {
         if(options.codeLength > 10) throw new Error("codeLength is too big");
         super();
-        
+
         this.name = name;
         this.options = options;
         this.players = [ new PlayerState(0, generateValidCode(options.codeLength)), new PlayerState(1, generateValidCode(options.codeLength)) ]; 
@@ -125,4 +125,4 @@ class GameState extends events.EventEmitter {
     }
 }
 
-module.exports = (name) => new GameState(name);
+module.exports = (name, options) => new GameState(name, options);
