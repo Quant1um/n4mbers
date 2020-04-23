@@ -1,0 +1,113 @@
+<!DOCTYPE HTML>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>N4mbers</title>
+
+        <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;700&display=swap" rel="stylesheet"> 
+        <link href="https://fonts.googleapis.com/css2?family=Cousine:wght@700&display=swap" rel="stylesheet"> 
+
+        <script
+            src="https://code.jquery.com/jquery-3.5.0.slim.min.js"
+            integrity="sha256-MlusDLJIP1GRgLrOflUQtshyP0TwT/RHXsI1wWGnQhs="
+            crossorigin="anonymous"></script>
+
+        <script src="client.js"></script>
+        <script src="ui.js"></script>
+        <script src="middle.js"></script>
+
+        <link rel="stylesheet" href="normalize.css">
+        <link rel="stylesheet" href="style.css">
+    </head>
+
+    <body>
+        <div class="game">
+            <div>
+                <div class="label">Your code</div>
+                <div class="code tooltip" id="info-code">
+                    <div class="hover tooltip-text">
+                        This&nbsp;is&nbsp;your&nbsp;code.
+                        Your&nbsp;opponent will&nbsp;try&nbsp;to&nbsp;guess&nbsp;it.
+                    </div>
+                </div>
+            </div>
+
+            <div class="grow-1">
+                <div class="label">Your guesses</div>
+                <div class="pad"></div>
+                <div class="guesses list" id="info-guesses">
+                    <div>
+                    </div>
+                </div>
+
+                <div class="pad"></div>
+                <div class="enter tooltip">
+                    <input class="input field grow-2" id="guess-input">
+                    <input type="button" class="input button" value="Guess" id="guess-button">
+
+                    <div class="bottom tooltip-text" id="tooltip-turn">
+                        It&nbsp;is&nbsp;your&nbsp;turn!
+                    </div>
+                </div>
+            </div>
+
+            <div class="grow-2">
+                <div class="label">Chat</div>
+                <div class="pad"></div>
+                <div class="chat list" id="info-chat">
+                </div>
+
+                <div class="pad"></div>
+                <div class="enter">
+                    <input class="input field grow-2" id="chat-input"> 
+                    <input type="button" class="input button" value="Send" id="chat-button">
+                </div>
+            </div>
+        </div>
+
+        <div class="overlay" id="overlay-waiting">
+            <div class="centered">
+                <div class="title">N<span class="inverted">4</span>mbers</div>
+                <div class="info">
+                    Waiting for the second player
+                    <div class="spinner"></div>
+                    Send this link to your friend: 
+
+                    <div class="tooltip">
+                        <span id="link" class="sub copy-on-click">http://n4.herokuapp.com/1488</span>
+                        <div class="hover bottom tooltip-text">Click to copy!</div>
+                    </div>
+                </div>
+            </div>        
+        </div>
+
+        <div class="overlay" id="overlay-connection">
+            <div class="centered">
+                <div class="title">N<span class="inverted">4</span>mbers</div>
+                <div class="info"> 
+                    <div class="spinner"></div>
+                    Connecting</div>
+            </div>        
+        </div>
+
+        <div class="overlay" id="overlay-lose">
+            <div class="centered">
+                <div class="title">N<span class="inverted">4</span>mbers</div>
+                <div class="info"> 
+                    You lost! <br/>
+                    Better luck next time. <br/>
+                    Thanks for playing the game &gt;.&lt;</div>
+            </div>        
+        </div>
+
+        <div class="overlay" id="overlay-win">
+            <div class="centered">
+                <div class="title">N<span class="inverted">4</span>mbers</div>
+                <div class="info"> 
+                    You won! <br/>
+                    Thanks for playing the game &gt;.&lt;</div>
+            </div>        
+        </div>
+    </body>
+</html>
