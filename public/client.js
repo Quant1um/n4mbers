@@ -93,7 +93,6 @@ class GameClient extends GameState {
 
         this.client.onopen = (e) => console.log("Connection established!");
         this.client.onmessage = (e) => {
-            console.log("message: '" + e.data + "'");
             let msg = JSON.parse(e.data);
 
             if(msg.q === "state") {
