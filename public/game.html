@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 
-<html>
+<html class="scroll">
     <head>
         <meta charset="utf-8">
         <title>N4mbers</title>
@@ -13,8 +13,11 @@
             integrity="sha256-MlusDLJIP1GRgLrOflUQtshyP0TwT/RHXsI1wWGnQhs="
             crossorigin="anonymous"></script>
 
+        <script src="jquery.nicescroll.min.js"></script>
+
         <script src="client.js"></script>
         <script src="ui.js"></script>
+        <script src="scroll.js"></script>
         <script src="middle.js"></script>
 
         <link rel="stylesheet" href="normalize.css">
@@ -37,7 +40,7 @@
                 <div class="game-part">
                     <div class="label">Your guesses</div>
                     <div class="pad"></div>
-                    <div class="guesses list" id="info-guesses">
+                    <div class="scroll guesses list" id="info-guesses">
                     </div>
     
                     <div class="pad"></div>
@@ -58,7 +61,7 @@
                 <div class="game-part">
                     <div class="label">Chat</div>
                     <div class="pad"></div>
-                    <div class="chat list" id="info-chat">
+                    <div class="scroll chat list" id="info-chat">
                     </div>
     
                     <div class="pad"></div>
