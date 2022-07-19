@@ -4,7 +4,7 @@ body, html {
 }
 
 body {
-    background: #242427;
+    background: #1d1d1f;
     color: #fefefe;
 
     font-family: "Comfortaa", cursive;
@@ -187,7 +187,7 @@ select {
 
     height: 60%;
     background-color: #27272c;
-    box-shadow: inset 1px 1px 5px 5px #00000020;
+    box-shadow: inset 1px 1px 5px 5px #00000012;
 
     width: 100%;
     max-width: 100%;
